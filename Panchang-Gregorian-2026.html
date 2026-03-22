@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panchang Birthday Tracker</title>
+    <style>
+        :root { --primary: #e67e22; --dark: #2c3e50; }
+        body { font-family: -apple-system, sans-serif; background: #fdf2e9; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { color: var(--dark); text-align: center; margin-bottom: 25px; font-size: 1.5rem; }
+        .input-box { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        /* Mobile friendly inputs */
+        input { 
+            width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 12px; 
+            box-sizing: border-box; font-size: 1rem; transition: 0.3s;
+        }
+        input:focus { border-color: var(--primary); outline: none; }
+        button { 
+            width: 100%; padding: 16px; background: var(--primary); color: white; 
+            border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; margin-top: 10px;
+        }
+        button:active { transform: scale(0.98); }
+        #output { 
+            margin-top: 25px; padding: 20px; border-radius: 15px; display: none; 
+            background: #fffbf0; border: 1px dashed var(--primary);
+        }
+        .val { color: var(--primary); font-weight: bold; }
+        .footer { text-align: center; font-size: 0.7rem; color: #999; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎂 Panchang Birthday</h2>
+    
+    <div class="input-box">
+        <label>Select Date of Birth</label>
+        <input type="date" id="userDate">
+    </div>
+
+    <div class="input-box">
+        <label>Birth Time</label>
+        <input type="time" id="userTime" value="06:00">
+    </div>
+
+    <div class="input-box">
+        <label>India Pin Code</label>
+        <input type="number" id="userPin" placeholder="Enter 6-digit Pin">
+    </div>
+
+    <button onclick="runCalc()">Calculate Next Birthday</button>
+
+    <div id="output"></div>
+    <div class="footer">Values are calculated based on Lunar Longitude (Chandra Spashta)</div>
+</div>
+
+<script>
+    const tithis = ["Prathama (Shukla)", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashti", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima", "Prathama (Krishna)", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashti", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"];
+    const nakshatras = ["Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"];
+
+    function getTithi(d) {
+        let jd = (d.getTime() / 86400000) + 2440587.5;
+        let day = jd - 2451545.0;
+        let moonL = (218.316 + 13.176396 * day) % 360;
+        let sunL = (280.460 + 0.9856474 * day) % 360;
+        let diff = (moonL - sunL + 360) % 360;
+        return Math.floor(diff / 12);
+    }
+
+    function getNak(d) {
+        let jd = (d.getTime() / 86400000) + 2440587.5;
+        let day = jd - 2451545.0;
+        let moonL = (218.316 + 13.176396 * day + 6.289 * Math.sin((134.963 + 13.064993 * day) * Math.PI / 180)) % 360;
+        if (moonL < 0) moonL += 360;
+        return Math.floor(moonL / (360/27));
+    }
+
+    function runCalc() {
+        const dVal = document.getElementById('userDate').value;
+        const tVal = document.getElementById('userTime').value;
+        if(!dVal) return alert("Please pick your birth date!");
+
+        const birthDate = new Date(`${dVal}T${tVal}`);
+        const targetTithi = getTithi(birthDate);
+        const targetNak = getNak(birthDate);
+        
+        let nextYear = new Date().getFullYear() + 1;
+        let foundDate = null;
+        let search = new Date(nextYear, birthDate.getMonth(), birthDate.getDate() - 20);
+
+        for (let i = 0; i < 50; i++) {
+            let check = new Date(search);
+            check.setDate(search.getDate() + i);
+            check.setHours(6, 0, 0); // Udaya Tithi (Sunrise)
+            if (getTithi(check) === targetTithi) {
+                foundDate = check;
+                break;
+            }
+        }
+
+        const out = document.getElementById('output');
+        out.style.display = 'block';
+        out.innerHTML = `
+            <p>Birth Tithi: <span class="val">${tithis[targetTithi]}</span></p>
+            <p>Birth Nakshatra: <span class="val">${nakshatras[targetNak]}</span></p>
+            <hr style="border:0; border-top:1px solid #eee">
+            <p style="margin-bottom:5px"><b>Next Birthday (Gregorian):</b></p>
+            <div style="font-size:1.3rem; color:#d35400; font-weight:800">
+                ${foundDate ? foundDate.toDateString() : "Calculation Error"}
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
