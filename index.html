@@ -1088,6 +1088,10 @@ function updateCountdown(targetDate) {
                 <div class="birthday-date">
                     ${birthdayText}
                 </div>
+                <div id="countdown" class="countdown-box">
+    Calculating countdown...
+</div>
+
 
                 <div class="birthday-message">
                     Your lunar birthday is represented
@@ -1155,7 +1159,30 @@ function updateCountdown(targetDate) {
         </div>
 
     `;
+
+
+    /* -----------------------------------------
+       START LIVE COUNTDOWN
+    ----------------------------------------- */
+
+    if (foundDate) {
+
+        updateCountdown(foundDate);
+
+        if (window.panchangCountdown) {
+            clearInterval(window.panchangCountdown);
+        }
+
+        window.panchangCountdown =
+            setInterval(function () {
+
+                updateCountdown(foundDate);
+
+            }, 1000);
+    }
+
 }
+
 
 
 </script>
