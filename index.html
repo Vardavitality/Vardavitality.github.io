@@ -968,14 +968,14 @@ function updateCountdown(targetDate) {
         getNak(birthDate);
 
 
-    let nextYear =
-    new Date().getFullYear() + 1;
+   let currentYear =
+    new Date().getFullYear();
 
 let foundDate = null;
 
 let search =
     new Date(
-        nextYear,
+        currentYear,
         birthDate.getMonth(),
         birthDate.getDate() - 20
     );
