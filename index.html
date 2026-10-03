@@ -968,21 +968,58 @@ function updateCountdown(targetDate) {
         getNak(birthDate);
 
 
-   let currentYear =
+  let currentYear =
     new Date().getFullYear();
 
 let foundDate = null;
 
-let search =
-    new Date(
-        currentYear,
-        birthDate.getMonth(),
-        birthDate.getDate() - 20
-    );
+function findPanchangBirthday(year) {
 
-
+    let search =
+        new Date(
+            year,
+            birthDate.getMonth(),
+            birthDate.getDate() - 20
+        );
 
     for (let i = 0; i < 50; i++) {
+
+        let check =
+            new Date(search);
+
+        check.setDate(
+            search.getDate() + i
+        );
+
+        check.setHours(6, 0, 0, 0);
+
+        if (
+            getTithi(check) ===
+            targetTithi
+        ) {
+            return check;
+        }
+    }
+
+    return null;
+}
+
+foundDate =
+    findPanchangBirthday(currentYear);
+
+const today =
+    new Date();
+
+today.setHours(0, 0, 0, 0);
+
+if (
+    foundDate &&
+    foundDate < today
+) {
+    foundDate =
+        findPanchangBirthday(currentYear + 1);
+}
+
 
         let check =
             new Date(search);
