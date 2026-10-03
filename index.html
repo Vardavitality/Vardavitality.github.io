@@ -385,6 +385,245 @@
                 align-items: flex-start;
             }
         }
+        /* =========================================
+   VERSION 2 - PANCHANG BIRTH PROFILE
+========================================= */
+
+.profile-title {
+    text-align: center;
+    color: #8b5b18;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    margin-top: 10px;
+}
+
+.profile-subtitle {
+    text-align: center;
+    color: #8994a3;
+    font-size: 0.82rem;
+    margin-top: 7px;
+    margin-bottom: 20px;
+}
+
+
+/* PANCHANG CARDS */
+
+.panchang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.panchang-card {
+    text-align: center;
+    padding: 22px 14px;
+
+    border-radius: 18px;
+
+    border: 1px solid #eee3d2;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffdf8,
+            #fff8eb
+        );
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.panchang-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(120,80,20,0.10);
+}
+
+.card-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.card-label {
+    color: #9a7540;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+}
+
+.card-value {
+    margin-top: 8px;
+
+    color: #c75d13;
+
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.card-description {
+    margin-top: 7px;
+
+    color: #8a94a2;
+
+    font-size: 0.7rem;
+}
+
+
+/* NEXT BIRTHDAY */
+
+.birthday-panel {
+    margin-top: 16px;
+
+    padding: 24px 18px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff5df,
+            #fffaf1
+        );
+
+    border: 1px solid #eed39f;
+
+    box-shadow:
+        inset 0 0 30px rgba(232,180,91,0.08);
+}
+
+.birthday-small-title {
+    color: #95641d;
+
+    font-size: 0.72rem;
+
+    font-weight: 900;
+
+    letter-spacing: 1.4px;
+}
+
+.birthday-date {
+    margin-top: 10px;
+
+    color: #c6530d;
+
+    font-size: clamp(1.45rem, 6vw, 2rem);
+
+    font-weight: 900;
+
+    line-height: 1.25;
+}
+
+.birthday-message {
+    margin-top: 9px;
+
+    color: #7f8996;
+
+    font-size: 0.78rem;
+
+    line-height: 1.5;
+}
+
+
+/* VEDIC TO SCIENCE JOURNEY */
+
+.journey-box {
+    margin-top: 18px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: #f5f8fc;
+
+    border: 1px solid #e3e9f0;
+}
+
+.journey-title {
+    text-align: center;
+
+    color: #203753;
+
+    font-size: 0.9rem;
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.journey-line {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.journey-item {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+    color: #43566e;
+
+    font-size: 0.68rem;
+}
+
+.journey-item span {
+    font-size: 1.35rem;
+}
+
+.journey-arrow {
+    color: #d69a40;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+}
+
+.journey-description {
+    margin: 17px 0 0;
+
+    text-align: center;
+
+    color: #748196;
+
+    font-size: 0.75rem;
+
+    line-height: 1.6;
+}
+
+
+/* MOBILE VERSION */
+
+@media (max-width: 500px) {
+
+    .panchang-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .journey-line {
+        gap: 6px;
+    }
+
+    .journey-arrow {
+        font-size: 0.8rem;
+    }
+
+}
+
     </style>
 </head>
 
@@ -727,79 +966,191 @@
 
 
         /* -----------------------------------------
-           DISPLAY RESULT
-        ----------------------------------------- */
+   DISPLAY RESULT - VERSION 2
+----------------------------------------- */
 
-        const out =
-            document.getElementById("output");
+const out =
+    document.getElementById("output");
 
-
-        out.style.display = "block";
-
-
-        out.innerHTML = `
-
-            <div class="result-card">
-
-                <div class="result-heading">
-                    ✦ Your Panchang Birth Profile
-                </div>
+out.style.display = "block";
 
 
-                <div class="panchang-row">
+const tithiName =
+    tithis[targetTithi];
 
-                    <span class="row-label">
-                        🌙 Birth Tithi
-                    </span>
-
-                    <span class="row-value">
-                        ${tithis[targetTithi]}
-                    </span>
-
-                </div>
+const nakshatraName =
+    nakshatras[targetNak];
 
 
-                <div class="panchang-row">
-
-                    <span class="row-label">
-                        ⭐ Birth Nakshatra
-                    </span>
-
-                    <span class="row-value">
-                        ${nakshatras[targetNak]}
-                    </span>
-
-                </div>
+const birthdayText =
+    foundDate
+    ? foundDate.toDateString()
+    : "Calculation Error";
 
 
-                <div class="birthday-divider"></div>
+out.innerHTML = `
+
+    <div class="profile-title">
+        ✦ YOUR PANCHANG BIRTH PROFILE ✦
+    </div>
 
 
-                <p class="next-label">
-                    🎂 Your Next Panchang Birthday
-                </p>
+    <div class="profile-subtitle">
+        Your traditional lunar birth identity
+    </div>
 
 
-                <div class="next-date">
-
-                    ${
-                        foundDate
-                        ? foundDate.toDateString()
-                        : "Calculation Error"
-                    }
-
-                </div>
+    <div class="panchang-grid">
 
 
-                <div class="science-note">
+        <!-- TITHI CARD -->
 
-                    🔭 <strong>From Vedic Skies to Modern Space Science:</strong>
-                    The result uses the calculated relationship between
-                    the Sun and Moon to identify the corresponding Tithi.
+        <div class="panchang-card tithi-card">
 
-                </div>
+            <div class="card-icon">
+                🌙
+            </div>
+
+            <div class="card-label">
+                BIRTH TITHI
+            </div>
+
+            <div class="card-value">
+                ${tithiName}
+            </div>
+
+            <div class="card-description">
+                Lunar day at your birth
+            </div>
+
+        </div>
+
+
+        <!-- NAKSHATRA CARD -->
+
+        <div class="panchang-card nakshatra-card">
+
+            <div class="card-icon">
+                ⭐
+            </div>
+
+            <div class="card-label">
+                NAKSHATRA
+            </div>
+
+            <div class="card-value">
+                ${nakshatraName}
+            </div>
+
+            <div class="card-description">
+                Lunar constellation
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- NEXT BIRTHDAY -->
+
+    <div class="birthday-panel">
+
+        <div class="birthday-small-title">
+            🎂 YOUR NEXT PANCHANG BIRTHDAY
+        </div>
+
+        <div class="birthday-date">
+            ${birthdayText}
+        </div>
+
+        <div class="birthday-message">
+
+            Your lunar birthday is represented here
+            in the Gregorian calendar.
+
+        </div>
+
+    </div>
+
+
+    <!-- VEDIC TO SCIENCE -->
+
+    <div class="journey-box">
+
+        <div class="journey-title">
+            🔭 From Vedic Skies to Modern Space Science
+        </div>
+
+
+        <div class="journey-line">
+
+            <div class="journey-item">
+
+                <span>🌞</span>
+
+                <strong>Sun</strong>
 
             </div>
+
+
+            <div class="journey-arrow">
+                →
+            </div>
+
+
+            <div class="journey-item">
+
+                <span>🌙</span>
+
+                <strong>Moon</strong>
+
+            </div>
+
+
+            <div class="journey-arrow">
+                →
+            </div>
+
+
+            <div class="journey-item">
+
+                <span>🪷</span>
+
+                <strong>Tithi</strong>
+
+            </div>
+
+
+            <div class="journey-arrow">
+                →
+            </div>
+
+
+            <div class="journey-item">
+
+                <span>📅</span>
+
+                <strong>Birthday</strong>
+
+            </div>
+
+        </div>
+
+
+        <p class="journey-description">
+
+            Panchang traditions use lunar and solar
+            relationships to describe time. This project
+            presents those concepts through a modern
+            computational approach.
+
+        </p>
+
+    </div>
+
+`;
+
 
         `;
     }
