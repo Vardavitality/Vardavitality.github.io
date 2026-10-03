@@ -901,259 +901,219 @@
 
     function runCalc() {
 
-        const dVal =
-            document.getElementById("userDate").value;
-
-        const tVal =
-            document.getElementById("userTime").value;
-
-        if (!dVal) {
-
-            alert("Please select your birth date!");
-
-            return;
-        }
-
-
-        const birthDate =
-            new Date(`${dVal}T${tVal}`);
-
-
-        const targetTithi =
-            getTithi(birthDate);
-
-        const targetNak =
-            getNak(birthDate);
-
-
-        let nextYear =
-            new Date().getFullYear() + 1;
-
-
-        let foundDate = null;
-
-
-        let search =
-            new Date(
-                nextYear,
-                birthDate.getMonth(),
-                birthDate.getDate() - 20
-            );
-
-
-        for (let i = 0; i < 50; i++) {
-
-            let check =
-                new Date(search);
-
-            check.setDate(
-                search.getDate() + i
-            );
-
-            check.setHours(6, 0, 0);
-
-
-            if (
-                getTithi(check) ===
-                targetTithi
-            ) {
-
-                foundDate = check;
-
-                break;
-            }
-        }
-
-
-        /* -----------------------------------------
-   DISPLAY RESULT - VERSION 2
------------------------------------------ */
-
-const out =
-    document.getElementById("output");
-
-out.style.display = "block";
-
-
-const tithiName =
-    tithis[targetTithi];
-
-const nakshatraName =
-    nakshatras[targetNak];
-
-
-const birthdayText =
-    foundDate
-    ? foundDate.toDateString()
-    : "Calculation Error";
-
-
-out.innerHTML = `
-
-    <div class="profile-title">
-        ✦ YOUR PANCHANG BIRTH PROFILE ✦
-    </div>
-
-
-    <div class="profile-subtitle">
-        Your traditional lunar birth identity
-    </div>
-
-
-    <div class="panchang-grid">
-
-
-        <!-- TITHI CARD -->
-
-        <div class="panchang-card tithi-card">
-
-            <div class="card-icon">
-                🌙
-            </div>
-
-            <div class="card-label">
-                BIRTH TITHI
-            </div>
-
-            <div class="card-value">
-                ${tithiName}
-            </div>
-
-            <div class="card-description">
-                Lunar day at your birth
-            </div>
-
-        </div>
-
-
-        <!-- NAKSHATRA CARD -->
-
-        <div class="panchang-card nakshatra-card">
-
-            <div class="card-icon">
-                ⭐
-            </div>
-
-            <div class="card-label">
-                NAKSHATRA
-            </div>
-
-            <div class="card-value">
-                ${nakshatraName}
-            </div>
-
-            <div class="card-description">
-                Lunar constellation
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- NEXT BIRTHDAY -->
-
-    <div class="birthday-panel">
-
-        <div class="birthday-small-title">
-            🎂 YOUR NEXT PANCHANG BIRTHDAY
-        </div>
-
-        <div class="birthday-date">
-            ${birthdayText}
-        </div>
-
-        <div class="birthday-message">
-
-            Your lunar birthday is represented here
-            in the Gregorian calendar.
-
-        </div>
-
-    </div>
-
-
-    <!-- VEDIC TO SCIENCE -->
-
-    <div class="journey-box">
-
-        <div class="journey-title">
-            🔭 From Vedic Skies to Modern Space Science
-        </div>
-
-
-        <div class="journey-line">
-
-            <div class="journey-item">
-
-                <span>🌞</span>
-
-                <strong>Sun</strong>
-
-            </div>
-
-
-            <div class="journey-arrow">
-                →
-            </div>
-
-
-            <div class="journey-item">
-
-                <span>🌙</span>
-
-                <strong>Moon</strong>
-
-            </div>
-
-
-            <div class="journey-arrow">
-                →
-            </div>
-
-
-            <div class="journey-item">
-
-                <span>🪷</span>
-
-                <strong>Tithi</strong>
-
-            </div>
-
-
-            <div class="journey-arrow">
-                →
-            </div>
-
-
-            <div class="journey-item">
-
-                <span>📅</span>
-
-                <strong>Birthday</strong>
-
-            </div>
-
-        </div>
-
-
-        <p class="journey-description">
-
-            Panchang traditions use lunar and solar
-            relationships to describe time. This project
-            presents those concepts through a modern
-            computational approach.
-
-        </p>
-
-    </div>
-
-`;
-
-
-        `;
+    const dVal =
+        document.getElementById("userDate").value;
+
+    const tVal =
+        document.getElementById("userTime").value;
+
+    if (!dVal) {
+        alert("Please select your birth date!");
+        return;
     }
+
+    const birthDate =
+        new Date(`${dVal}T${tVal}`);
+
+    const targetTithi =
+        getTithi(birthDate);
+
+    const targetNak =
+        getNak(birthDate);
+
+
+    let nextYear =
+        new Date().getFullYear() + 1;
+
+    let foundDate = null;
+
+    let search =
+        new Date(
+            nextYear,
+            birthDate.getMonth(),
+            birthDate.getDate() - 20
+        );
+
+
+    for (let i = 0; i < 50; i++) {
+
+        let check =
+            new Date(search);
+
+        check.setDate(
+            search.getDate() + i
+        );
+
+        check.setHours(6, 0, 0);
+
+
+        if (
+            getTithi(check) ===
+            targetTithi
+        ) {
+
+            foundDate = check;
+            break;
+        }
+    }
+
+
+    const out =
+        document.getElementById("output");
+
+    out.style.display = "block";
+
+
+    const tithiName =
+        tithis[targetTithi];
+
+    const nakshatraName =
+        nakshatras[targetNak];
+
+
+    const birthdayText =
+        foundDate
+        ? foundDate.toDateString()
+        : "Calculation Error";
+
+
+    out.innerHTML = `
+
+        <div class="result-card">
+
+            <div class="profile-title">
+                ✦ YOUR PANCHANG BIRTH PROFILE ✦
+            </div>
+
+            <div class="profile-subtitle">
+                Your traditional lunar birth identity
+            </div>
+
+
+            <div class="panchang-grid">
+
+                <div class="panchang-card">
+
+                    <div class="card-icon">
+                        🌙
+                    </div>
+
+                    <div class="card-label">
+                        BIRTH TITHI
+                    </div>
+
+                    <div class="card-value">
+                        ${tithiName}
+                    </div>
+
+                    <div class="card-description">
+                        Lunar day at your birth
+                    </div>
+
+                </div>
+
+
+                <div class="panchang-card">
+
+                    <div class="card-icon">
+                        ⭐
+                    </div>
+
+                    <div class="card-label">
+                        NAKSHATRA
+                    </div>
+
+                    <div class="card-value">
+                        ${nakshatraName}
+                    </div>
+
+                    <div class="card-description">
+                        Lunar constellation
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="birthday-panel">
+
+                <div class="birthday-small-title">
+                    🎂 YOUR NEXT PANCHANG BIRTHDAY
+                </div>
+
+                <div class="birthday-date">
+                    ${birthdayText}
+                </div>
+
+                <div class="birthday-message">
+                    Your lunar birthday is represented
+                    here in the Gregorian calendar.
+                </div>
+
+            </div>
+
+
+            <div class="journey-box">
+
+                <div class="journey-title">
+                    🔭 From Vedic Skies to Modern Space Science
+                </div>
+
+
+                <div class="journey-line">
+
+                    <div class="journey-item">
+                        <span>🌞</span>
+                        <strong>Sun</strong>
+                    </div>
+
+                    <div class="journey-arrow">
+                        →
+                    </div>
+
+                    <div class="journey-item">
+                        <span>🌙</span>
+                        <strong>Moon</strong>
+                    </div>
+
+                    <div class="journey-arrow">
+                        →
+                    </div>
+
+                    <div class="journey-item">
+                        <span>🪷</span>
+                        <strong>Tithi</strong>
+                    </div>
+
+                    <div class="journey-arrow">
+                        →
+                    </div>
+
+                    <div class="journey-item">
+                        <span>📅</span>
+                        <strong>Birthday</strong>
+                    </div>
+
+                </div>
+
+
+                <p class="journey-description">
+
+                    Panchang traditions use lunar and
+                    solar relationships to describe time.
+                    This project presents those concepts
+                    through a modern computational approach.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
 
 </script>
 
