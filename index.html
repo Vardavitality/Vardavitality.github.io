@@ -896,337 +896,381 @@
 
 
     /* -----------------------------------------
-       MAIN CALCULATION
+       COUNTDOWN
     ----------------------------------------- */
-function updateCountdown(targetDate) {
 
-    const countdown = document.getElementById("countdown");
+    function updateCountdown(targetDate) {
 
-    if (!countdown) return;
+        const countdown =
+            document.getElementById("countdown");
 
-    const now = new Date();
+        if (!countdown) return;
 
-    const difference = targetDate.getTime() - now.getTime();
+        const now = new Date();
 
-    if (difference <= 0) {
-        countdown.innerHTML = "🎉 Happy Panchang Birthday!";
-        return;
-    }
+        const difference =
+            targetDate.getTime() -
+            now.getTime();
 
-    const days = Math.floor(
-        difference / (1000 * 60 * 60 * 24)
-    );
+        if (difference <= 0) {
 
-    const hours = Math.floor(
-        (difference / (1000 * 60 * 60)) % 24
-    );
+            countdown.innerHTML =
+                "🎉 Happy Panchang Birthday!";
 
-    const minutes = Math.floor(
-        (difference / (1000 * 60)) % 60
-    );
-
-    const seconds = Math.floor(
-        (difference / 1000) % 60
-    );
-
-    countdown.innerHTML = `
-        <div class="countdown-number">${days}</div>
-        <div class="countdown-label">DAYS TO GO</div>
-        <div class="countdown-time">
-            ${String(hours).padStart(2, "0")} :
-            ${String(minutes).padStart(2, "0")} :
-            ${String(seconds).padStart(2, "0")}
-        </div>
-    `;
-}
-
-
-
-    function runCalc() { 
-
-    const dVal =
-        document.getElementById("userDate").value;
-
-    const tVal =
-        document.getElementById("userTime").value;
-
-   if (!dVal) {
-    alert("Please select your birth date!");
-    return;
-}
-
-
-    const birthDate =
-    new Date(`${dVal}T${tVal}`);
-
-
-
-    const targetTithi =
-        getTithi(birthDate);
-
-    const targetNak =
-        getNak(birthDate);
-
-
-  let currentYear =
-    new Date().getFullYear();
-
-let foundDate = null;
-
-function findPanchangBirthday(year) {
-
-    let search =
-        new Date(
-            year,
-            birthDate.getMonth(),
-            birthDate.getDate() - 20
-        );
-
-    for (let i = 0; i < 50; i++) {
-
-        let check =
-            new Date(search);
-
-        check.setDate(
-            search.getDate() + i
-        );
-
-        check.setHours(6, 0, 0, 0);
-
-        if (
-            getTithi(check) ===
-            targetTithi
-        ) {
-            return check;
+            return;
         }
+
+        const days =
+            Math.floor(
+                difference /
+                (1000 * 60 * 60 * 24)
+            );
+
+        const hours =
+            Math.floor(
+                (difference /
+                (1000 * 60 * 60)) % 24
+            );
+
+        const minutes =
+            Math.floor(
+                (difference /
+                (1000 * 60)) % 60
+            );
+
+        const seconds =
+            Math.floor(
+                (difference / 1000) % 60
+            );
+
+        countdown.innerHTML = `
+            <div class="countdown-number">
+                ${days}
+            </div>
+
+            <div class="countdown-label">
+                DAYS TO GO
+            </div>
+
+            <div class="countdown-time">
+                ${String(hours).padStart(2, "0")} :
+                ${String(minutes).padStart(2, "0")} :
+                ${String(seconds).padStart(2, "0")}
+            </div>
+        `;
     }
-
-    return null;
-}
-
-foundDate =
-    findPanchangBirthday(currentYear);
-
-const today =
-    new Date();
-
-today.setHours(0, 0, 0, 0);
-
-if (
-    foundDate &&
-    foundDate < today
-) {
-    foundDate =
-        findPanchangBirthday(currentYear + 1);
-}
-
-
-        let check =
-            new Date(search);
-
-        check.setDate(
-            search.getDate() + i
-        );
-
-        check.setHours(6, 0, 0);
-
-
-        if (
-            getTithi(check) ===
-            targetTithi
-        ) {
-
-            foundDate = check;
-            break;
-        }
-    }
-
-
-    const out =
-        document.getElementById("output");
-
-    out.style.display = "block";
-
-
-    const tithiName =
-        tithis[targetTithi];
-
-    const nakshatraName =
-        nakshatras[targetNak];
-
-
-    const birthdayText =
-        foundDate
-        ? foundDate.toDateString()
-        : "Calculation Error";
-
-
-    out.innerHTML = `
-
-        <div class="result-card">
-
-            <div class="profile-title">
-                ✦ YOUR PANCHANG BIRTH PROFILE ✦
-            </div>
-
-            <div class="profile-subtitle">
-                Your traditional lunar birth identity
-            </div>
-
-
-            <div class="panchang-grid">
-
-                <div class="panchang-card">
-
-                    <div class="card-icon">
-                        🌙
-                    </div>
-
-                    <div class="card-label">
-                        BIRTH TITHI
-                    </div>
-
-                    <div class="card-value">
-                        ${tithiName}
-                    </div>
-
-                    <div class="card-description">
-                        Lunar day at your birth
-                    </div>
-
-                </div>
-
-
-                <div class="panchang-card">
-
-                    <div class="card-icon">
-                        ⭐
-                    </div>
-
-                    <div class="card-label">
-                        NAKSHATRA
-                    </div>
-
-                    <div class="card-value">
-                        ${nakshatraName}
-                    </div>
-
-                    <div class="card-description">
-                        Lunar constellation
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="birthday-panel">
-
-                <div class="birthday-small-title">
-                    🎂 YOUR NEXT PANCHANG BIRTHDAY
-                </div>
-
-                <div class="birthday-date">
-                    ${birthdayText}
-                </div>
-                <div id="countdown" class="countdown-box">
-    Calculating countdown...
-</div>
-
-
-                <div class="birthday-message">
-                    Your lunar birthday is represented
-                    here in the Gregorian calendar.
-                </div>
-
-            </div>
-
-
-            <div class="journey-box">
-
-                <div class="journey-title">
-                    🔭 From Vedic Skies to Modern Space Science
-                </div>
-
-
-                <div class="journey-line">
-
-                    <div class="journey-item">
-                        <span>🌞</span>
-                        <strong>Sun</strong>
-                    </div>
-
-                    <div class="journey-arrow">
-                        →
-                    </div>
-
-                    <div class="journey-item">
-                        <span>🌙</span>
-                        <strong>Moon</strong>
-                    </div>
-
-                    <div class="journey-arrow">
-                        →
-                    </div>
-
-                    <div class="journey-item">
-                        <span>🪷</span>
-                        <strong>Tithi</strong>
-                    </div>
-
-                    <div class="journey-arrow">
-                        →
-                    </div>
-
-                    <div class="journey-item">
-                        <span>📅</span>
-                        <strong>Birthday</strong>
-                    </div>
-
-                </div>
-
-
-                <p class="journey-description">
-
-                    Panchang traditions use lunar and
-                    solar relationships to describe time.
-                    This project presents those concepts
-                    through a modern computational approach.
-
-                </p>
-
-            </div>
-
-        </div>
-
-    `;
 
 
     /* -----------------------------------------
-       START LIVE COUNTDOWN
+       MAIN CALCULATION
     ----------------------------------------- */
 
-   if (foundDate) {
+    function runCalc() {
 
-    updateCountdown(foundDate);
+        const dVal =
+            document.getElementById("userDate").value;
 
-    if (window.panchangCountdown) {
-        clearInterval(window.panchangCountdown);
-    }
+        const tVal =
+            document.getElementById("userTime").value;
 
-    window.panchangCountdown =
-        setInterval(function () {
+        if (!dVal) {
+
+            alert("Please select your birth date!");
+
+            return;
+        }
+
+
+        const birthDate =
+            new Date(`${dVal}T${tVal}`);
+
+
+        const targetTithi =
+            getTithi(birthDate);
+
+        const targetNak =
+            getNak(birthDate);
+
+
+        /* -----------------------------------------
+           FIND PANCHANG BIRTHDAY
+        ----------------------------------------- */
+
+        function findPanchangBirthday(year) {
+
+            let search =
+                new Date(
+                    year,
+                    birthDate.getMonth(),
+                    birthDate.getDate() - 20
+                );
+
+
+            for (let i = 0; i < 50; i++) {
+
+                let check =
+                    new Date(search);
+
+                check.setDate(
+                    search.getDate() + i
+                );
+
+                check.setHours(
+                    6, 0, 0, 0
+                );
+
+
+                if (
+                    getTithi(check) ===
+                    targetTithi
+                ) {
+
+                    return check;
+                }
+            }
+
+
+            return null;
+        }
+
+
+        /* -----------------------------------------
+           SEARCH CURRENT YEAR
+        ----------------------------------------- */
+
+        const currentYear =
+            new Date().getFullYear();
+
+        let foundDate =
+            findPanchangBirthday(currentYear);
+
+
+        /* -----------------------------------------
+           IF CURRENT YEAR HAS PASSED,
+           SEARCH NEXT YEAR
+        ----------------------------------------- */
+
+        const today =
+            new Date();
+
+        today.setHours(
+            0, 0, 0, 0
+        );
+
+
+        if (
+            foundDate &&
+            foundDate < today
+        ) {
+
+            foundDate =
+                findPanchangBirthday(
+                    currentYear + 1
+                );
+        }
+
+
+        /* -----------------------------------------
+           DISPLAY RESULT
+        ----------------------------------------- */
+
+        const out =
+            document.getElementById("output");
+
+        out.style.display =
+            "block";
+
+
+        const tithiName =
+            tithis[targetTithi];
+
+        const nakshatraName =
+            nakshatras[targetNak];
+
+
+        const birthdayText =
+            foundDate
+            ? foundDate.toDateString()
+            : "Calculation Error";
+
+
+        out.innerHTML = `
+
+            <div class="result-card">
+
+                <div class="profile-title">
+                    ✦ YOUR PANCHANG BIRTH PROFILE ✦
+                </div>
+
+                <div class="profile-subtitle">
+                    Your traditional lunar birth identity
+                </div>
+
+
+                <div class="panchang-grid">
+
+                    <div class="panchang-card">
+
+                        <div class="card-icon">
+                            🌙
+                        </div>
+
+                        <div class="card-label">
+                            BIRTH TITHI
+                        </div>
+
+                        <div class="card-value">
+                            ${tithiName}
+                        </div>
+
+                        <div class="card-description">
+                            Lunar day at your birth
+                        </div>
+
+                    </div>
+
+
+                    <div class="panchang-card">
+
+                        <div class="card-icon">
+                            ⭐
+                        </div>
+
+                        <div class="card-label">
+                            NAKSHATRA
+                        </div>
+
+                        <div class="card-value">
+                            ${nakshatraName}
+                        </div>
+
+                        <div class="card-description">
+                            Lunar constellation
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="birthday-panel">
+
+                    <div class="birthday-small-title">
+                        🎂 YOUR NEXT PANCHANG BIRTHDAY
+                    </div>
+
+                    <div class="birthday-date">
+                        ${birthdayText}
+                    </div>
+
+                    <div id="countdown"
+                         class="countdown-box">
+                        Calculating countdown...
+                    </div>
+
+
+                    <div class="birthday-message">
+                        Your lunar birthday is represented
+                        here in the Gregorian calendar.
+                    </div>
+
+                </div>
+
+
+                <div class="journey-box">
+
+                    <div class="journey-title">
+                        🔭 From Vedic Skies to Modern Space Science
+                    </div>
+
+
+                    <div class="journey-line">
+
+                        <div class="journey-item">
+                            <span>🌞</span>
+                            <strong>Sun</strong>
+                        </div>
+
+                        <div class="journey-arrow">
+                            →
+                        </div>
+
+                        <div class="journey-item">
+                            <span>🌙</span>
+                            <strong>Moon</strong>
+                        </div>
+
+                        <div class="journey-arrow">
+                            →
+                        </div>
+
+                        <div class="journey-item">
+                            <span>🪷</span>
+                            <strong>Tithi</strong>
+                        </div>
+
+                        <div class="journey-arrow">
+                            →
+                        </div>
+
+                        <div class="journey-item">
+                            <span>📅</span>
+                            <strong>Birthday</strong>
+                        </div>
+
+                    </div>
+
+
+                    <p class="journey-description">
+
+                        Panchang traditions use lunar and
+                        solar relationships to describe time.
+                        This project presents those concepts
+                        through a modern computational approach.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        /* -----------------------------------------
+           START COUNTDOWN
+        ----------------------------------------- */
+
+        if (foundDate) {
 
             updateCountdown(foundDate);
 
-        }, 1000);
+
+            if (window.panchangCountdown) {
+
+                clearInterval(
+                    window.panchangCountdown
+                );
+            }
+
+
+            window.panchangCountdown =
+                setInterval(
+                    function () {
+
+                        updateCountdown(
+                            foundDate
+                        );
+
+                    },
+                    1000
+                );
+        }
+
     }
 
-}
-
-
-
 </script>
+
 
 </body>
 </html>
