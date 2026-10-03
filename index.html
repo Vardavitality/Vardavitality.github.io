@@ -699,14 +699,18 @@
 
         <div class="input-box">
 
-            <label for="userPin">
-                📍 India PIN Code
-            </label>
+            <label>📍 Birth Place PIN Code</label>
 
-            <input
-                type="number"
-                id="userPin"
-                placeholder="Enter 6-digit PIN code"
+<input
+    type="text"
+    id="userPin"
+    placeholder="Enter 6-digit Indian PIN"
+    maxlength="6"
+    inputmode="numeric"
+>
+
+<div id="pinResult" class="pin-result"></div>
+
                 inputmode="numeric"
             >
 
@@ -964,8 +968,83 @@
     /* -----------------------------------------
        MAIN CALCULATION
     ----------------------------------------- */
+async function lookupPin() {
 
-    function runCalc() {
+    const pin =
+        document.getElementById("userPin").value.trim();
+
+    const pinResult =
+        document.getElementById("pinResult");
+
+    if (!/^\d{6}$/.test(pin)) {
+
+        pinResult.innerHTML =
+            "⚠️ Please enter a valid 6-digit Indian PIN.";
+
+        pinResult.style.color = "#c0392b";
+
+        return null;
+    }
+
+    pinResult.innerHTML =
+        "🔎 Finding birth location...";
+
+    try {
+
+        const response =
+            await fetch(
+                "https://api.pincodeapi.in/api/v1/pincode/" + pin
+            );
+
+        const result =
+            await response.json();
+
+        if (
+            !result.success ||
+            !result.data ||
+            !result.data.post_offices ||
+            result.data.post_offices.length === 0
+        ) {
+
+            pinResult.innerHTML =
+                "❌ PIN code not found.";
+
+            pinResult.style.color =
+                "#c0392b";
+
+            return null;
+        }
+
+        const office =
+            result.data.post_offices[0];
+
+        const locationText =
+            `${office.office_name || "Post Office"}, 
+             ${office.district || ""}, 
+             ${office.state || ""}`;
+
+        pinResult.innerHTML =
+            `📍 ${locationText}`;
+
+        pinResult.style.color =
+            "#287a45";
+
+        return office;
+
+    } catch (error) {
+
+        pinResult.innerHTML =
+            "⚠️ Unable to check PIN right now.";
+
+        pinResult.style.color =
+            "#c0392b";
+
+        return null;
+    }
+}
+
+    async function runCalc() {
+
 
         const dVal =
             document.getElementById("userDate").value;
@@ -983,6 +1062,16 @@
 
         const birthDate =
             new Date(`${dVal}T${tVal}`);
+        const pin =
+    document.getElementById("userPin").value.trim();
+
+const pinLocation =
+    await lookupPin();
+
+if (!pinLocation) {
+    return;
+}
+
 
 
         const targetTithi =
