@@ -950,15 +950,15 @@ function updateCountdown(targetDate) {
     const tVal =
         document.getElementById("userTime").value;
 
-    if (!dVal) {
-        alert("alert("The calculator is working!");
-");
-        return;
-    }
+   if (!dVal) {
+    alert("Please select your birth date!");
+    return;
+}
+
 
     const birthDate =
-        new Date(`${dVal}T${tVal}`);
-        alert("Birth date created!");
+    new Date(`${dVal}T${tVal}`);
+
 
 
     const targetTithi =
@@ -1169,20 +1169,22 @@ let search =
        START LIVE COUNTDOWN
     ----------------------------------------- */
 
-    if (foundDate) {
+   if (foundDate) {
 
-        updateCountdown(foundDate);
+    updateCountdown(foundDate);
 
-        if (window.panchangCountdown) {
-            clearInterval(window.panchangCountdown);
-        }
+    if (window.panchangCountdown) {
+        clearInterval(window.panchangCountdown);
+    }
 
-        window.panchangCountdown =
-            setInterval(function () {
+    window.panchangCountdown =
+        setInterval(function () {
 
-                updateCountdown(foundDate);
+            updateCountdown(foundDate);
 
-            }, 1000);
+        }, 1000);
+    }
+
 }
 
 
