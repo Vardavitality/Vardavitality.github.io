@@ -965,18 +965,18 @@ function updateCountdown(targetDate) {
         getNak(birthDate);
 
 
-    let currentYear =
-    new Date().getFullYear();
+    let nextYear =
+    new Date().getFullYear() + 1;
 
+let foundDate = null;
 
-    let foundDate = null;
+let search =
+    new Date(
+        nextYear,
+        birthDate.getMonth(),
+        birthDate.getDate() - 20
+    );
 
-    let search =
-        new Date(
-            nextYear,
-            birthDate.getMonth(),
-            birthDate.getDate() - 20
-        );
 
 
     for (let i = 0; i < 50; i++) {
